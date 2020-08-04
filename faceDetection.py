@@ -5,6 +5,9 @@ import os
 import io
 import PIL.Image as Image
 
+########## Replace the value with your own HOloLens 2 IP Address
+host = "192.168.1.18"
+
 #########################################read img from byte file 
 
 def readimage(path):
@@ -50,7 +53,7 @@ bitPerG = 1024
 size = 8100*bitPerG
 
 # HoloLens ip and port [9005 is the only working port !!]
-host, port = "192.168.0.20" , 9005   
+port = 9005   
 fileNum = 0
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect((host,port))
