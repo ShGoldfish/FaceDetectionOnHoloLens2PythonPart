@@ -6,7 +6,7 @@ import io
 import PIL.Image as Image
 
 ########## Replace the value with your own HOloLens 2 IP Address
-host = "192.168.1.18"
+host = "192.168.0.12"
 
 #########################################read img from byte file 
 
@@ -39,14 +39,29 @@ def detectFaces():
 
 	net.setInput(blob)
 	detections = net.forward()
+
 	num_faces = 0
+	faces_box = np.zeros([1])
 	for i in range(0, detections.shape[2]):
 		confidence = detections[0, 0, i, 2]
-		
-		if confidence > conf:
-			num_faces +=1
-	data = str(num_faces)
-	return data
+		#print(confidence)
+		if confidence < conf:
+			continue
+		num_faces += 1
+		# compute the (x, y)-coordinates of the bounding box for the object
+		box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+		(startX, startY, endX, endY) = box.astype("int")
+
+		# draw the bounding box of the face along with the associated
+		# probability
+		# if i==0:
+		faces_box = np.append(faces_box,np.around(box, decimals=3))
+
+	#faces_box = faces_box.reshape((num_faces+1,4))
+	faces_box = np.delete(faces_box,0, 0);
+	data = np.array2string(faces_box, separator=',')
+	return data[1:-1]
+
 
 ##############################################Socket connection#######################
 bitPerG = 1024
