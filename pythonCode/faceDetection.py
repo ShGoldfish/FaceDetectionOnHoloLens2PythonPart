@@ -55,7 +55,7 @@ def detectFaces():
 		# draw the bounding box of the face along with the associated
 		# probability
 		# if i==0:
-		faces_box = np.append(faces_box,np.around(box, decimals=3))
+		faces_box = np.append(faces_box,box.astype("int"))#np.around(box, decimals=3))
 
 	#faces_box = faces_box.reshape((num_faces+1,4))
 	#faces_box = np.delete(faces_box,0, 0);

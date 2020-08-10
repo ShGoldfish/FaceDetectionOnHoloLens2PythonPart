@@ -22,16 +22,18 @@ def detectFaces():
 		num_faces += 1
 		# compute the (x, y)-coordinates of the bounding box for the object
 		box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+		#print (box)
 		(startX, startY, endX, endY) = box.astype("int")
 
+		#print((startX, startY, endX, endY) * np.array([1, 1, 1, 1]))
 		# draw the bounding box of the face along with the associated
 		# probability
 		# if i==0:
-		faces_box = np.append(faces_box,np.around(box, decimals=3))
+		faces_box = np.append(faces_box, box.astype("int"))
 
 	#faces_box = faces_box.reshape((num_faces+1,4))
 	#faces_box = np.delete(faces_box,0, 0);
-	if faces_box.size < 4 || faces_box.size % 4 != 0 :
+	if faces_box.size < 4 :
 		return " "
 	data = np.array2string(faces_box, separator=',')
 	return data[1:-1]
