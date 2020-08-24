@@ -6,8 +6,10 @@ import io
 import PIL.Image as Image
 
 ########## Replace the value with your own HOloLens 2 IP Address
-host = "192.168.0.12"
-
+host = "192.168.0.16"
+host = "192.168.0.5"
+host = "169.254.38.107"
+host = "169.254.54.72"
 #########################################read img from byte file 
 
 def readimage(path):
@@ -32,7 +34,7 @@ def saveImgFromByteFile(fileNum):
 def detectFaces():
 	conf = 0.6
 	net = cv2.dnn.readNetFromCaffe("../pythonCode/deploy.prototxt.txt", "../pythonCode/res10_300x300_ssd_iter_140000.caffemodel")
-	image = cv2.imread("frame.jpg")
+	image = cv2.imread("frame.png")
 	(h, w) = image.shape[:2]
 	blob = cv2.dnn.blobFromImage(cv2.resize(image, (300, 300)), 1.0,
 		(300, 300), (104.0, 177.0, 123.0))
@@ -55,6 +57,7 @@ def detectFaces():
 		# draw the bounding box of the face along with the associated
 		# probability
 		# if i==0:
+		#print(box)
 		faces_box = np.append(faces_box,box.astype("int"))#np.around(box, decimals=3))
 
 	#faces_box = faces_box.reshape((num_faces+1,4))
@@ -70,6 +73,7 @@ def detectFaces():
 ##############################################Socket connection#######################
 bitPerG = 1024
 size = 8100*bitPerG
+size = 1826*bitPerG   # for png file
 
 # HoloLens ip and port [9005 is the only working port !!]
 port = 9005   
@@ -83,12 +87,13 @@ while True:
 		stream = io.BytesIO(byteImg)
 		try:
 			img = Image.open(stream)
-			img.save('frame.jpg')
+			img.save('frame.png')
 		except OSError:
 			print("Cannot save frame")
 		stream.close()
 		data = detectFaces()
 		# Send Face Detection Result to HL
+		#print("sending: " + data)
 		sock.sendall(data.encode())
 
 	finally:
