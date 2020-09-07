@@ -5,6 +5,6 @@ ECHO Make sure the value of "host" in the ../pythonCode/faceDetection.py matches
 rem PAUSE
 ECHO ****************************************************************
 ECHO Start running the App on your HoloLens Device.  
-python ../pythonCode/faceDetection.py
+python ../pythonCode/Client.py
 ECHO DONE!
 PAUSE
